@@ -4,15 +4,15 @@ var svo = null;
 // the main application object
 function SVO()
 {
-    // Musée des Arts et métiers
-    this.lat = 48.866478;
-    this.lng = 2.355385999999953;
+    // Trafalgar Square
+    this.lat = 48.866511;
+    this.lng = 2.355399000000034;
     this.zoom = 1;
 
     this.slat = 48.866436;
     this.slng = 2.355325;
 
-    this.image = "slidecat.gif";
+    this.image = "img/slidecat.gif";
 
     this.pt = new google.maps.LatLng(this.lat, this.lng);
     this.streetPt = new google.maps.LatLng(this.slat, this.slng);
@@ -23,11 +23,11 @@ function SVO()
     this.szoom = 1;
 
     this.distance = 0;  // distance in metres from street view to marker
-    this.maximumDistance = 20;     // distance beyond which marker is hidden
+    this.maximumDistance = 10;     // distance beyond which marker is hidden
 
     // dimensions of street view container (fixed)
-    this.panWidth = 1600;
-    this.panHeight = 900;
+    this.panWidth = 480;
+    this.panHeight = 480;
 
     // dimensions of marker container (resized according to current pov)
     this.markerWidth = 12;
@@ -57,7 +57,7 @@ SVO.prototype.m_initMap = function ()
 SVO.prototype.m_initPanorama = function ()
 {
     var visible = false;
-    var l_panDiv = eid("map-canvas");
+    var l_panDiv = eid("panDiv");
 
     // controls can be hidden here to prevent the position being changed by the user
     var l_panOptions =
@@ -81,12 +81,12 @@ SVO.prototype.m_initPanorama = function ()
     // event handlers    
     google.maps.event.addListener(pan, 'pov_changed', function ()
     {
-		svo.m_updateMarker();
+        svo.m_updateMarker();
     });
 
     google.maps.event.addListener(pan, 'zoom_changed', function ()
     {
-		svo.m_updateMarker();
+        svo.m_updateMarker();
     });
 
     google.maps.event.addListener(pan, 'position_changed', function ()
@@ -190,11 +190,10 @@ SVO.prototype.m_updateMarker = function ()
 
         // hide marker when its beyond the maximum distance
         l_markerDiv.style.display = this.distance < this.maximumDistance ? "block" : "none";
-         glog("distance = " + Math.floor(this.distance) + " m (" + l_markerDiv.style.display + ") distance scale = " + l_distanceScale + " l_adjustedZoom = " + l_adjustedZoom + " x = " + x + " y = " + y);
+        //glog("distance = " + Math.floor(this.distance) + " m (" + l_markerDiv.style.display + ") distance scale = " + l_distanceScale + " l_adjustedZoom = " + l_adjustedZoom);
+		glog("Position = " + pan.getPosition() + " Heading = " + pan.getPov().heading + " Pitch = " + pan.getPov().pitch + " Zoom = " + pan.getZoom() + " distance = " + Math.floor(this.distance) + " m (" + l_markerDiv.style.display + ") distance scale = " + l_distanceScale + " l_adjustedZoom = " + l_adjustedZoom);
 
-//        eid("markerInfo").innerHTML = "lat: " + formatFloat(this.streetPt.lat(), 6) + " lng: " + formatFloat(this.streetPt.lng(), 6) + " distance: " + Math.floor(this.distance) + " m";
-		
-        eid("markerInfo").innerHTML = "lat: " + formatFloat(this.streetPt.lat(), 6) + " lng: " + formatFloat(this.streetPt.lng(), 6) + " distance: " + Math.floor(this.distance) + " m ";		
+        eid("markerInfo").innerHTML = "lat: " + formatFloat(this.streetPt.lat(), 6) + " lng: " + formatFloat(this.streetPt.lng(), 6) + " distance: " + Math.floor(this.distance) + " m";
     }
 }
 
@@ -252,3 +251,4 @@ function normalizeAngle(a)
 
     return a;
 }
+
